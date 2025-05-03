@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Binary Conversion Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            margin: 0;
+        }
+
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 280px;
+        }
+
+        #display {
+            width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            text-align: right;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .conversion-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buttons button {
+            background-color: #6C757D;
+            color: white;
+        }
+
+        .conversion-buttons button {
+            background-color: #4C7C9D;
+            color: white;
+            flex: 1 1 30%;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="removeLastCharacter()">⌫</button>
+        </div>
+        <div class="conversion-buttons">
+            <button onclick="convertBinToDec()">BCD</button>
+            <button onclick="convertToBin()">DB</button>
+            <button onclick="convertHexToBin()">HB</button>
+            <button onclick="onesComplement()">1C</button>
+            <button onclick="twosComplement()">2C</button>
+            <button onclick="binaryToOctal()">BO</button>
+            <button onclick="octalToBinary()">OB</button>
+        </div>
+    </div>
+
+    <script>
+        function appendNumber(number) {
+            const display = document.getElementById('display');
+            display.value += number;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function removeLastCharacter() {
+            const display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
+        function convertBinToDec() {
+            const display = document.getElementById('display');
+            const binary = display.value;
+            if (!/^[01]+$/.test(binary)) return alert("Invalid binary number!");
+            display.value = parseInt(binary, 2);
+        }
+
+        function convertToBin() {
+            const display = document.getElementById('display');
+            const number = parseInt(display.value);
+            if (isNaN(number)) return alert("Enter a valid decimal number!");
+            display.value = number.toString(2);
+        }
+
+        function convertHexToBin() {
+            const display = document.getElementById('display');
+            const hex = display.value;
+            if (!/^[0-9A-Fa-f]+$/.test(hex)) return alert("Invalid hexadecimal number!");
+            const number = parseInt(hex, 16);
+            display.value = number.toString(2);
+        }
+
+        function onesComplement() {
+            const display = document.getElementById('display');
+            const binary = display.value;
+            if (!/^[01]+$/.test(binary)) return alert("Invalid binary number!");
+            display.value = binary.split('').map(bit => bit === '0' ? '1' : '0').join('');
+        }
+
+        function twosComplement() {
+            const display = document.getElementById('display');
+            const binary = display.value;
+            if (!/^[01]+$/.test(binary)) return alert("Invalid binary number!");
+            let onesComp = binary.split('').map(bit => bit === '0' ? '1' : '0').join('');
+            let twosComp = (parseInt(onesComp, 2) + 1).toString(2);
+            while (twosComp.length < binary.length) {
+                twosComp = '0' + twosComp;
+            }
+            display.value = twosComp;
+        }
+
+        function binaryToOctal() {
+            const display = document.getElementById('display');
+            const binary = display.value;
+            if (!/^[01]+$/.test(binary)) return alert("Invalid binary number!");
+            const decimal = parseInt(binary, 2);
+            display.value = decimal.toString(8);
+        }
+
+        function octalToBinary() {
+            const display = document.getElementById('display');
+            const octal = display.value;
+            if (!/^[0-7]+$/.test(octal)) return alert("Invalid octal number!");
+            const decimal = parseInt(octal, 8);
+            display.value = decimal.toString(2);
+        }
+    </script>
+</body>
+</html>
